@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Road Assessment | RoadGuard AI</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+
+    <nav class="navbar">
+
+        <div class="logo">RoadGuard AI</div>
+
+        <div class="nav-links">
+
+            <a href="/">Home</a>
+
+            <a href="/assessment">Assessment</a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Assessment Section -->
+
+    <section class="section">
+
+        <h2>Road Condition Assessment</h2>
+
+        <p class="section-description">
+
+            Enter the details of the road to analyse
+            its current condition and environmental factors.
+
+        </p>
+
+
+        <form action="/predict" method="POST" class="assessment-form">
+
+
+            <!-- Road Age -->
+
+            <div class="form-group">
+
+                <label>Road Age (in years)</label>
+
+                <input
+                    type="number"
+                    name="road_age"
+                    min="0"
+                    max="30"
+                    step="0.1"
+                    placeholder="Enter road age"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Existing Road Condition -->
+
+            <div class="form-group">
+
+                <label>Existing Road Condition</label>
+
+                <select name="road_condition" required>
+
+                    <option value="">Select condition</option>
+
+                    <option value="Good">Good</option>
+
+                    <option value="Moderate">Moderate</option>
+
+                    <option value="Poor">Poor</option>
+
+                    <option value="Severe">Severe</option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Rainfall -->
+
+            <div class="form-group">
+
+                <label>Rainfall Intensity</label>
+
+                <select name="rainfall" required>
+
+                    <option value="">Select rainfall intensity</option>
+
+                    <option value="Low">Low</option>
+
+                    <option value="Moderate">Moderate</option>
+
+                    <option value="High">High</option>
+
+                    <option value="Very High">Very High</option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Traffic Density -->
+
+            <div class="form-group">
+
+                <label>Traffic Density</label>
+
+                <select name="traffic" required>
+
+                    <option value="">Select traffic density</option>
+
+                    <option value="Low">Low</option>
+
+                    <option value="Medium">Medium</option>
+
+                    <option value="High">High</option>
+
+                    <option value="Very High">Very High</option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Drainage -->
+
+            <div class="form-group">
+
+                <label>Drainage Condition</label>
+
+                <select name="drainage" required>
+
+                    <option value="">Select drainage condition</option>
+
+                    <option value="Good">Good</option>
+
+                    <option value="Average">Average</option>
+
+                    <option value="Poor">Poor</option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Heavy Vehicles -->
+
+            <div class="form-group">
+
+                <label>Heavy Vehicle Frequency</label>
+
+                <select name="heavy_vehicles" required>
+
+                    <option value="">Select frequency</option>
+
+                    <option value="Low">Low</option>
+
+                    <option value="Medium">Medium</option>
+
+                    <option value="High">High</option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Submit Button -->
+
+            <button type="submit" class="primary-btn">
+
+                Analyse Road Condition
+
+            </button>
+
+
+        </form>
+
+    </section>
+
+
+    <footer>
+
+        <p>RoadGuard AI | Intelligent Road Damage Progression Predictor</p>
+
+    </footer>
+
+
+</body>
+
+</html>

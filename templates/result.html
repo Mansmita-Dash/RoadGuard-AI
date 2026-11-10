@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RoadGuard AI | Analysis</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .dashboard {
+            max-width: 1050px;
+            margin: 45px auto;
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-header h1 { color: white; font-size: 30px; }
+        .dashboard-header p { color: #aabbd0; margin-top: 8px; }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .panel {
+            background: #14243a;
+            border: 1px solid #263e5c;
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+        }
+
+        .panel h2 { font-size: 19px; margin-bottom: 22px; }
+
+        .score-panel { text-align: center; }
+
+        .score-circle {
+            width: 190px;
+            height: 190px;
+            border-radius: 50%;
+            margin: 15px auto;
+            display: grid;
+            place-items: center;
+            background: conic-gradient(
+                var(--risk-color) var(--score-angle),
+                #293b50 0deg
+            );
+            position: relative;
+        }
+
+        .score-circle::before {
+            content: "";
+            position: absolute;
+            width: 155px;
+            height: 155px;
+            border-radius: 50%;
+            background: #14243a;
+        }
+
+        .score-content { position: relative; z-index: 1; }
+
+        .score-number { font-size: 42px; font-weight: bold; }
+
+        .score-label { color: #aabbd0; font-size: 13px; }
+
+        .risk-badge {
+            display: inline-block;
+            padding: 9px 24px;
+            border-radius: 30px;
+            background: var(--risk-bg);
+            color: var(--risk-color);
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .risk-message { color: #aabbd0; margin-top: 15px; line-height: 1.6; }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 13px 0;
+            border-bottom: 1px solid #263e5c;
+            color: #aabbd0;
+        }
+
+        .detail-row strong { color: white; text-align: right; }
+
+        .recommendation {
+            margin-top: 22px;
+            border-left: 4px solid var(--risk-color);
+        }
+
+        .recommendation p { color: #cbd5e1; line-height: 1.7; }
+
+        .meter {
+            height: 10px;
+            background: #293b50;
+            border-radius: 20px;
+            margin: 20px 0 8px;
+            overflow: hidden;
+        }
+
+        .meter-fill {
+            height: 100%;
+            width: 0;
+            border-radius: 20px;
+            transition: width 1.2s ease;
+        }
+
+        .meter-labels {
+            display: flex;
+            justify-content: space-between;
+            color: #aabbd0;
+            font-size: 12px;
+        }
+
+        .dashboard-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .dashboard-actions a {
+            text-decoration: none;
+            padding: 13px 25px;
+            border-radius: 7px;
+            font-weight: bold;
+        }
+
+        .new-assessment { background: #38bdf8; color: #071827; }
+
+        .home-button { border: 1px solid #38bdf8; color: white; }
+
+        .disclaimer {
+            text-align: center;
+            color: #8295aa;
+            font-size: 12px;
+            margin-top: 25px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 700px) {
+            .analysis-grid { grid-template-columns: 1fr; }
+            .dashboard-header h1 { font-size: 24px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">RoadGuard AI</div>
+        <a href="/">Home</a>
+    </nav>
+
+    <main class="dashboard">
+
+        <div class="dashboard-header">
+            <div>
+                <h1>Road Analysis Dashboard</h1>
+                <p>Intelligent road damage risk assessment</p>
+            </div>
+            <span>● Analysis Complete</span>
+        </div>
+
+        <div class="analysis-grid">
+
+            <section class="panel score-panel">
+                <h2>Overall Damage Risk</h2>
+
+                <div class="score-circle" id="scoreCircle">
+                    <div class="score-content">
+                        <div class="score-number">
+                            <span id="scoreNumber">0</span>
+                        </div>
+                        <div class="score-label">OUT OF 100</div>
+                    </div>
+                </div>
+
+                <div class="risk-badge" id="riskBadge">
+                    {{ risk_category }} Risk
+                </div>
+
+                <p class="risk-message">
+                    Your road assessment indicates a
+                    {{ risk_category|lower }} level of damage risk.
+                </p>
+
+                <div class="meter">
+                    <div class="meter-fill" id="meterFill"></div>
+                </div>
+
+                <div class="meter-labels">
+                    <span>Low</span>
+                    <span>Medium</span>
+                    <span>High</span>
+                </div>
+            </section>
+
+            <section class="panel">
+                <h2>Road Condition Overview</h2>
+
+                <div class="detail-row">
+                    <span>Road Age</span>
+                    <strong>{{ road_age }} years</strong>
+                </div>
+
+                <div class="detail-row">
+                    <span>Road Condition</span>
+                    <strong>{{ road_condition }}</strong>
+                </div>
+
+                <div class="detail-row">
+                    <span>Rainfall</span>
+                    <strong>{{ rainfall }}</strong>
+                </div>
+
+                <div class="detail-row">
+                    <span>Traffic Density</span>
+                    <strong>{{ traffic }}</strong>
+                </div>
+
+                <div class="detail-row">
+                    <span>Drainage</span>
+                    <strong>{{ drainage }}</strong>
+                </div>
+
+                <div class="detail-row">
+                    <span>Heavy Vehicles</span>
+                    <strong>{{ heavy_vehicles }}</strong>
+                </div>
+            </section>
+
+        </div>
+
+        <section class="panel recommendation" id="recommendation">
+            <h2>Recommended Maintenance Action</h2>
+            <p>{{ recommendation }}</p>
+        </section>
+
+        <div class="dashboard-actions">
+            <a href="/assessment" class="new-assessment">+ New Assessment</a>
+            <a href="/" class="home-button">Back to Home</a>
+        </div>
+
+        <p class="disclaimer">
+            Powered by Fuzzy Logic Inference System.<br>
+            Experimental risk assessment prototype. Not a validated real-world forecast.
+        </p>
+
+    </main>
+
+    <script>
+        const score = Number({{ risk_score | tojson }});
+        const category = {{ risk_category | tojson }};
+
+        const colors = {
+            Low: { main: "#22c55e", bg: "#14532d" },
+            Medium: { main: "#f59e0b", bg: "#713f12" },
+            High: { main: "#ef4444", bg: "#7f1d1d" }
+        };
+
+        const selected = colors[category] || colors.High;
+
+        const circle = document.getElementById("scoreCircle");
+        const badge = document.getElementById("riskBadge");
+        const meter = document.getElementById("meterFill");
+        const number = document.getElementById("scoreNumber");
+        const recommendation = document.getElementById("recommendation");
+
+        circle.style.setProperty("--risk-color", selected.main);
+        circle.style.setProperty("--score-angle", (score * 3.6) + "deg");
+
+        badge.style.setProperty("--risk-color", selected.main);
+        badge.style.setProperty("--risk-bg", selected.bg);
+
+        meter.style.background = selected.main;
+        recommendation.style.setProperty("--risk-color", selected.main);
+
+        let current = 0;
+        const duration = 1200;
+        const start = performance.now();
+
+        function animateScore(now) {
+            const progress = Math.min((now - start) / duration, 1);
+            current = score * progress;
+
+            number.textContent = current.toFixed(0);
+
+            if (progress < 1) {
+                requestAnimationFrame(animateScore);
+            }
+        }
+
+        requestAnimationFrame(animateScore);
+
+        setTimeout(() => {
+            meter.style.width = score + "%";
+        }, 100);
+    </script>
+
+</body>
+</html>
