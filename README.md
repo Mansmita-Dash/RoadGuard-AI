@@ -1,20 +1,20 @@
 # RoadGuard AI 🚧
 ### Intelligent Road Damage Progression Predictor Using Fuzzy Logic
 
-## 📌 About the Project
+## About the Project
 
 RoadGuard AI is a web-based prototype designed to assess road damage risk using Soft Computing techniques, particularly Fuzzy Logic.
 
 The system evaluates different road-related factors and generates a risk score, risk category, and maintenance recommendation.
 
-## 🎯 Objectives
+## Objectives
 
 - Assess road damage risk based on multiple parameters.
 - Apply Fuzzy Logic to handle uncertain road conditions.
 - Identify roads that may require preventive maintenance.
 - Provide recommendations to support road maintenance planning.
 
-## ⚙️ Input Parameters
+## Input Parameters
 
 The system considers:
 
@@ -25,7 +25,7 @@ The system considers:
 - Drainage Condition
 - Heavy Vehicle Frequency
 
-## 🧠 Technology Used
+## Technology Used
 
 - Python
 - Flask
@@ -35,7 +35,7 @@ The system considers:
 - CSS
 - JavaScript
 
-## 🔍 Methodology
+## Methodology
 
 The system uses a rule-based Fuzzy Logic model.
 
@@ -47,7 +47,7 @@ The system uses a rule-based Fuzzy Logic model.
 6. Classify the result as Low, Medium, or High risk.
 7. Generate a maintenance recommendation.
 
-## 🚀 How to Run the Project
+## How to Run the Project
 
 ### 1. Clone the repository
 
@@ -91,7 +91,7 @@ python app.py
 http://127.0.0.1:5000/
 ```
 
-## 📊 Expected Output
+## Expected Output
 
 The system displays:
 
@@ -100,13 +100,13 @@ The system displays:
 - Risk category
 - Suggested maintenance action
 
-## ⚠️ Project Limitations
+## Project Limitations
 
 RoadGuard AI is an experimental academic prototype. Its fuzzy rules and membership functions are based on illustrative assumptions and have not been calibrated or validated using real-world road deterioration datasets.
 
 Therefore, its output represents an indicative risk assessment, not a scientifically validated prediction of future road damage.
 
-## 👩‍💻 Developed By
+## Developed By
 
 **Mansmita Dash**
 
